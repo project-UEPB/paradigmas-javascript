@@ -1,7 +1,8 @@
 import React from 'react';
+import { Container } from './components/container';
 
 export const App = () => (
   <div className="App">
-    <h1>Hello World</h1>
+    <Container />
   </div>
 );

@@ -25,6 +25,11 @@ module.exports = {
   ],
   rules: {
     'react/jsx-filename-extension': 0,
-    'import/prefer-default-export': 'off'
+    'import/prefer-default-export': 'off',
+    'import/no-unresolved': 'off',
+    'react/prop-types': 'off',
+    'jsx-a11y/no-static-element-interactions': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
+    'no-nested-ternary': 'off',
   },
 };
