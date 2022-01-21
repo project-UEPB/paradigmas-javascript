@@ -1,8 +1,14 @@
+/* eslint-disable */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { App } from './App';
 import reportWebVitals from './reportWebVitals';
+
+import HomeScreen from "./screens/HomeScreen.js";
+import GameScreen from "./screens/GameScreen.js";
+import ScoreScreen from "./screens/ScoreScreen.js";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -10,6 +16,7 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root'),
 );
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
