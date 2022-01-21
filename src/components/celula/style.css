@@ -1,0 +1,67 @@
+.celula {
+  height: 25px;
+  width: 25px;
+  border: 1px solid;
+}
+
+.withou-border {
+  border-left-color: rgba(204, 204, 204, 0.28);
+  border-top-color: rgba(204, 204, 204, 0.28);
+  border-right-color: rgba(51, 51, 51, 0.28);
+  border-bottom-color: rgba(51, 51, 51, 0.28);
+}
+
+.regular {
+  position: relative;
+  background-color: #fff;
+  border-left-color: #ccc;
+  border-top-color: #ccc;
+  border-right-color: #333;
+  border-bottom-color: #333;
+}
+
+.regular:hover {
+  background: #009FF9;
+  border-left-color: #ccc;
+  border-top-color: #ccc;
+  border-right-color: #333;
+  border-bottom-color: #333;
+}
+
+.celula-bg {
+  height: 25px;
+  width: 25px;
+  position: relative;
+}
+
+.img {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.porta-avioes {
+  height: 25px;
+  width: 125px;
+}
+
+.submarino {
+  height: 25px;
+  width: 50px;
+}
+
+.navio-tanque {
+  height: 25px;
+  width: 100px;
+}
+
+.contratopedeiros {
+  height: 25px;
+  width: 75px;
+}
+
+.bomba {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+}
