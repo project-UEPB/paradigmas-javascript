@@ -6,7 +6,7 @@ import './style.css';
 
 const initialPoints = { player: 0, IAzinha: 0 };
 
-export const Container = () => {
+export const ContainerBatalha = () => {
   const [points, setPoints] = useState(initialPoints);
 
   return (

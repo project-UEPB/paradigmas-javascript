@@ -1,8 +1,8 @@
 import React from 'react';
-import { Container } from './components/container';
+import { ContainerBatalha } from './components/containerBatalha';
 
 export const App = () => (
   <div className="App">
-    <Container />
+    <ContainerBatalha />
   </div>
 );
