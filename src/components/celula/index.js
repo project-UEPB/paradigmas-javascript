@@ -3,8 +3,12 @@ import React from 'react';
 
 import './style.css';
 
-export const Celula = ({ configCel, onOpen }) => {
-  const a = 10;
+export const Celula = ({ configCel, onOpen, changePoints }) => {
+  const handlerOnClick = () => {
+    onOpen();
+    changePoints();
+  };
+
   return (
     <div className={configCel.ship.hasShip ? 'celula-bg' : ''}>
       {configCel.ship.imagePath && (
@@ -25,7 +29,7 @@ export const Celula = ({ configCel, onOpen }) => {
         className={!configCel.open
           ? 'celula regular'
           : 'celula withou-border'}
-        onClick={onOpen}
+        onClick={handlerOnClick}
       />
     </div>
   );

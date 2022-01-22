@@ -10,7 +10,9 @@ import {
 
 import './style.css';
 
-export const Campo = () => {
+const initialPoints = { player: 0, IAzinha: 0 };
+
+export const Campo = ({ points, changePoints, player }) => {
   const initialCelulas = new Array(16).fill(null).map((_, i) => new Array(16).fill(null)
     .map((__, j) => ({
       open: false,
@@ -20,6 +22,7 @@ export const Campo = () => {
         hasShip: false,
         size: 0,
         kind: '',
+        points: 25,
       },
     })));
 
@@ -81,14 +84,24 @@ export const Campo = () => {
     randomInitialShip();
   }, []);
 
+  const handlerChangePoints = (celula) => {
+    if (celula.ship.hasShip && !celula.open) {
+      changePoints({ ...points, [player]: points[player] + celula.ship.points });
+    } else if (!celula.ship.hasShip) {
+      changePoints({ ...points, [player]: points[player] - celula.ship.points });
+    }
+  };
+
   return (
     <div className="campo campo-16x16">
       {celulas.map((line, x) => line.map((configCel, y) => (
         <Celula
+          key={(x ** 2) + y}
           configCel={configCel}
           onOpen={() => handlerUpdateCelulas(x, y, {
             ...celulas[x][y], open: true,
           })}
+          changePoints={() => handlerChangePoints(configCel)}
         />
       )))}
     </div>

@@ -1,21 +1,27 @@
-.container-jogo {
-  background: radial-gradient(54.35% 106.19% at 50.71% 50.98%, #009FF9 0%, rgba(0, 163, 255, 0.26) 100%);
+.cols {
   display: flex;
+  margin-bottom: 30px;
+}
+
+.container-jogo {
   height: 100vh;
+  background: radial-gradient(54.35% 106.19% at 50.71% 50.98%, #009FF9 0%, rgba(0, 163, 255, 0.26) 100%);
+}
+
+.options {
+  padding: 0px 50px;
+  height: 100%;
 }
 
 .col-1 {
-  /* background-color: red; */
   width: 100%;
 }
 
 .col-2 {
-  /* background-color: yellow; */
   width: 100%;
 }
 
 .content {
-  height: 100vh;
   flex-direction: column;
   display: flex;
   justify-content: center;
