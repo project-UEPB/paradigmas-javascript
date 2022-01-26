@@ -6,10 +6,6 @@ import './index.css';
 import { App } from './App';
 import reportWebVitals from './reportWebVitals';
 
-import HomeScreen from "./screens/HomeScreen.js";
-import GameScreen from "./screens/GameScreen.js";
-import ScoreScreen from "./screens/ScoreScreen.js";
-
 ReactDOM.render(
   <React.StrictMode>
     <App />
