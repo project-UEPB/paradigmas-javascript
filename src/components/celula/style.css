@@ -2,6 +2,7 @@
   height: 25px;
   width: 25px;
   border: 1px solid;
+  font-size: 10px;
 }
 
 .withou-border {
@@ -34,30 +35,66 @@
   position: relative;
 }
 
-.img {
+.selected-bg {
+  background: rgba(0, 159, 243, 4);
+}
+
+.img-h {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-.porta-avioes {
+.porta-avioes-h {
   height: 25px;
   width: 125px;
 }
 
-.submarino {
+.submarino-h {
   height: 25px;
   width: 50px;
 }
 
-.navio-tanque {
+.navio-tanque-h {
   height: 25px;
   width: 100px;
 }
 
-.contratopedeiros {
+.contratopedeiros-h {
   height: 25px;
   width: 75px;
+}
+
+.img-v {
+  position: absolute;
+}
+
+.porta-avioes-v {
+  height: 140px;
+  width: 24px;
+  bottom: -10px;
+  left: 1px;
+}
+
+.submarino-v {
+  height: 83px;
+  bottom: -18px;
+  width: 21px;
+  left: 2px;
+}
+
+.navio-tanque-v {
+  height: 140px;
+  bottom: -22px;
+  width: 24px;
+  left: 0;
+}
+
+.contratopedeiros-v {
+  height: 120px;
+  bottom: -22px;
+  width: 21px;
+  left: 0;
 }
 
 .bomba {

@@ -9,8 +9,29 @@
 }
 
 .options {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
   padding: 0px 50px;
-  height: 100%;
+}
+
+.btns-play-game > button {
+  margin: 10px;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #fff;
+}
+
+.btns-play-game > button:hover {
+  background-color: rgba(255, 255, 241, 0.7);
+}
+
+.btns-play-game > button {
+  font-size: 0.99rem;
+  font-weight: bold;
 }
 
 .col-1 {
