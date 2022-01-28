@@ -72,27 +72,27 @@
 .porta-avioes-v {
   height: 140px;
   width: 24px;
-  bottom: -10px;
+  top: -8px;
   left: 1px;
 }
 
 .submarino-v {
   height: 83px;
-  bottom: -18px;
+  top: -16px;
   width: 21px;
   left: 2px;
 }
 
 .navio-tanque-v {
   height: 140px;
-  bottom: -22px;
+  top: -22px;
   width: 24px;
   left: 0;
 }
 
 .contratopedeiros-v {
   height: 120px;
-  bottom: -22px;
+  top: -23px;
   width: 21px;
   left: 0;
 }

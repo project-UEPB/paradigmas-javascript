@@ -68,40 +68,75 @@ export const Campo = ({
     setCelulas(copy);
   };
 
-  const handlerChangeCels = (x, y) => {
+  const handlerConfigCels = (x, y) => {
     if (statusGame.config && getShipSelected(seletedShip)) {
-      if (getShipSelected(seletedShip).qtd - 1 < 0) return;
+      if (orientacao === 'h') {
+        if (getShipSelected(seletedShip).qtd - 1 < 0) return;
+        if (celulas[y][x].ship.hasShip) return;
+        if (getShipSelected(seletedShip).size + x > 16) return;
 
-      const rightSideValid = XRigthSideIsValid(
-        getShipSelected(seletedShip).size,
-        celulas[y],
-        x,
-      );
-
-      if (!rightSideValid) return;
-      if (celulas[y][x].ship.hasShip) return;
-      if (getShipSelected(seletedShip).size + x > 16) return;
-
-      let firstCicle = true;
-      for (let i = x; i < getShipSelected(seletedShip).size + x; i++) {
-        handlerUpdateCelulas(
-          i,
-          y,
-          {
-            ...celulas[y][i],
-            open: true,
-            ship: {
-              imagePath: firstCicle ? getShipSelected(seletedShip).imagePath : '',
-              kind: getShipSelected(seletedShip).kind,
-              points: getShipSelected(seletedShip).points,
-              size: getShipSelected(seletedShip).size,
-              hasShip: getShipSelected(seletedShip).hasShip,
-              orientacao,
-            },
-          },
+        const rightSideValid = XRigthSideIsValid(
+          getShipSelected(seletedShip).size,
+          celulas[y],
+          x,
         );
 
-        if (firstCicle) firstCicle = false;
+        if (!rightSideValid) return;
+
+        let firstCicle = true;
+        for (let i = x; i < getShipSelected(seletedShip).size + x; i++) {
+          handlerUpdateCelulas(
+            i,
+            y,
+            {
+              ...celulas[y][i],
+              open: true,
+              ship: {
+                imagePath: firstCicle ? getShipSelected(seletedShip).imagePath : '',
+                kind: getShipSelected(seletedShip).kind,
+                points: getShipSelected(seletedShip).points,
+                size: getShipSelected(seletedShip).size,
+                hasShip: getShipSelected(seletedShip).hasShip,
+                orientacao,
+              },
+            },
+          );
+
+          if (firstCicle) firstCicle = false;
+        }
+      } else if (orientacao === 'v') {
+        if (getShipSelected(seletedShip).qtd - 1 < 0) return;
+        if ((y + 1) - getShipSelected(seletedShip).size < 0) return;
+        if (celulas[y][x].ship.hasShip) return;
+
+        for (let l = y - getShipSelected(seletedShip).size + 1; l < y + 1; l++) {
+          if (celulas[l][x].ship.hasShip) return;
+        }
+
+        let firstCicle = true;
+        for (let i = y - getShipSelected(seletedShip).size + 1; i < y + 1; i++) {
+          handlerUpdateCelulas(
+            x,
+            i,
+            {
+              ...celulas[i][x],
+              open: true,
+              ship: {
+                imagePath: firstCicle ? getShipSelected(seletedShip).imagePath : '',
+                kind: getShipSelected(seletedShip).kind,
+                points: getShipSelected(seletedShip).points,
+                size: getShipSelected(seletedShip).size,
+                hasShip: getShipSelected(seletedShip).hasShip,
+                orientacao,
+              },
+            },
+          );
+
+          if (firstCicle) firstCicle = false;
+        }
+      } else {
+        // eslint-disable-next-line no-useless-return
+        return;
       }
 
       setSelectedShip([
@@ -187,7 +222,7 @@ export const Campo = ({
           key={(x ** 2) + y}
           configCel={configCel}
           xy={{ x, y }}
-          onOpen={() => handlerChangeCels(x, y)}
+          onOpen={() => handlerConfigCels(x, y)}
           changePoints={() => handlerChangePoints(configCel)}
         />
       )))}

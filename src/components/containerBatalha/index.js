@@ -74,6 +74,16 @@ export const ContainerBatalha = () => {
     if (statusGame.config) {
       const qtdShip = findBy(shipKey, ships).qtd;
 
+      if (qtdShip === 0) {
+        setShips([
+          ...removeOne(shipKey, ships),
+          {
+            ...findBy(shipKey, ships),
+            selected: !findBy(shipKey, ships).selected,
+          },
+        ]);
+      }
+
       if (qtdShip - 1 < 0) return;
 
       const objAux = [
@@ -96,6 +106,11 @@ export const ContainerBatalha = () => {
 
   return (
     <div className="container-jogo">
+      <Botao
+        onClick={() => {}}
+        text="<"
+        title="Voltar"
+      />
       <div className="cols">
         <div className="col-1">
           <div className="content">

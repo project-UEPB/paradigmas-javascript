@@ -77,11 +77,13 @@ export const SelectShip = ({
         <Botao
           active={orientacao === 'h' ? 'btn-orientacao-ativo' : ''}
           text="H"
+          title="Horizontal"
           onClick={() => onChangeOrientacao('h')}
         />
         <Botao
           active={orientacao === 'v' ? 'btn-orientacao-ativo' : ''}
           text="V"
+          title="Vertical"
           onClick={() => onChangeOrientacao('v')}
         />
       </div>
