@@ -1,16 +1,23 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
 /* eslint-disable react/button-has-type */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Botao } from '../Botao';
 import { Campo } from '../campo';
 import { SelectShip } from '../selectShip';
 
 import './style.css';
 
-const initialPoints = { player: 0, IAzinha: 0 };
-const initialShips = [
+const initialPoints = {
+  player: {
+    name: 'jose',
+    points: 0,
+  },
+  IAzinha: 0,
+};
+export const initialShips = [
   {
     kind: 'submarino',
     qtd: 4,
@@ -69,6 +76,7 @@ export const ContainerBatalha = () => {
   const [ships, setShips] = useState(initialShips);
   const [statusGame, setStatusGame] = useState(initialStatusGame);
   const [orientacao, setOrientacao] = useState('h');
+  const [playerGaming, setPlayerGaming] = useState('player');
 
   const handlerSelectedShip = (shipKey) => {
     if (statusGame.config) {
@@ -101,7 +109,22 @@ export const ContainerBatalha = () => {
   };
 
   const handlerConfig = () => {
-    if (!statusGame.config) setStatusGame({ ...initialStatusGame, config: true });
+    if (!statusGame.config) {
+      setShips(initialShips);
+      setStatusGame({ ...initialStatusGame, config: true });
+    }
+  };
+
+  const canInitGame = () => {
+    for (let i = 0; i < ships.length; i++) {
+      if (ships[i].qtd > 0) return false;
+    }
+
+    return true;
+  };
+
+  const handlerInicio = () => {
+    if (!statusGame.inicio && canInitGame()) setStatusGame({ ...initialStatusGame, inicio: true });
   };
 
   return (
@@ -115,12 +138,14 @@ export const ContainerBatalha = () => {
         <div className="col-1">
           <div className="content">
             <h2>Pontuação</h2>
-            <h3>{points.player}</h3>
-            <h3>Fulaninho</h3>
+            <h3>{points.player.points}</h3>
+            <h3>{points.player.name}</h3>
             <Campo
               points={points}
               changePoints={setPoints}
               player="player"
+              playerGaming={playerGaming}
+              setPlayerGaming={setPlayerGaming}
               seletedShip={ships}
               orientacao={orientacao}
               setSelectedShip={setShips}
@@ -137,10 +162,12 @@ export const ContainerBatalha = () => {
             <Campo
               campoConfig={{ x: 16, y: 16 }}
               points={points}
+              playerGaming={playerGaming}
+              setPlayerGaming={setPlayerGaming}
               changePoints={setPoints}
+              statusGame={statusGame}
               orientacao="h"
               player="IAzinha"
-              statusGame={initialStatusGame}
             />
           </div>
         </div>
@@ -165,7 +192,7 @@ export const ContainerBatalha = () => {
           />
           <Botao
             text="Iniciar"
-            onClick={() => setStatusGame({ ...initialStatusGame, inicio: true })}
+            onClick={() => handlerInicio()}
           />
         </div>
       </div>

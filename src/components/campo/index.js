@@ -1,3 +1,5 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-useless-return */
 /* eslint-disable no-debugger */
 /* eslint-disable no-continue */
 /* eslint-disable consistent-return */
@@ -36,6 +38,8 @@ export const Campo = ({
   orientacao,
   setSelectedShip,
   campoConfig = {},
+  playerGaming,
+  setPlayerGaming,
 }) => {
   const handlerInitialCelulas = () => {
     const initialCelulas = new Array(campoConfig.x).fill(null).map(
@@ -60,7 +64,7 @@ export const Campo = ({
   };
 
   const [celulas, setCelulas] = useState(handlerInitialCelulas());
-  const [qtdselectedCels, setQtdSelectedCels] = useState(0);
+  const [selectedCels, setSelectedCels] = useState([]);
 
   const handlerUpdateCelulas = (x, y, objUpdate) => {
     const copy = [...celulas];
@@ -149,8 +153,33 @@ export const Campo = ({
     }
   };
 
+  const closeCels = () => {
+    const copy = [...celulas];
+    for (let i = 0; i < copy.length; i++) {
+      for (let j = 0; j < copy[i].length; j++) {
+        copy[i][j] = {
+          ...celulas[i][j],
+          open: false,
+        };
+      }
+    }
+
+    setCelulas(copy);
+  };
+
   const handlerSelectedCels = (x, y) => {
-    setQtdSelectedCels(qtdselectedCels + 1);
+    if (selectedCels.length >= 3) return;
+    const copy = [...selectedCels];
+    copy.push({ x, y });
+    setSelectedCels(copy);
+    handlerUpdateCelulas(
+      x,
+      y,
+      {
+        ...celulas[y][x],
+        selected: true,
+      },
+    );
   };
 
   const randomInitialShip = () => {
@@ -201,18 +230,193 @@ export const Campo = ({
     }
   };
 
+  const delay = (n) => {
+    return new Promise(((resolve) => {
+      setTimeout(resolve, n * 1000);
+    }));
+  };
+
   useEffect(() => {
+    if (statusGame.config && !statusGame.inicio) {
+      setCelulas(handlerInitialCelulas());
+    }
+  }, [statusGame.config]);
+
+  useEffect(() => {
+    if (statusGame.inicio) {
+      closeCels();
+    }
+
     if (player === 'IAzinha') randomInitialShip();
-    if (statusGame.config) setCelulas(handlerInitialCelulas());
-  }, [statusGame]);
+  }, [statusGame.inicio]);
 
   const handlerChangePoints = (celula) => {
-    if (celula.ship.hasShip && !celula.open) {
-      changePoints({ ...points, [player]: points[player] + celula.ship.points });
-    } else if (!celula.ship.hasShip) {
-      changePoints({ ...points, [player]: points[player] - celula.ship.points });
+    if (celula.ship.hasShip && celula.open) {
+      // console.log('#->', player, celula);
+      // console.log('#->', points);
+      // if (playerGaming === 'player') {
+      //   changePoints({
+      //     ...points,
+      //     [player]: {
+      //       ...points[player],
+      //       points: points[player].points + celula.ship.points,
+      //     },
+      //   });
+      // } else if (playerGaming === 'IAzinha') {
+      //   changePoints({
+      //     ...points,
+      //     [player]: points[player] + celula.ship.points,
+      //   });
+      // }
+    } else if (!celula.ship.hasShip && celula.open) {
+      if (player === 'IAzinha') {
+        console.log(points);
+        console.log('|->', player, {
+          ...points,
+          [player]: points[player].points - celula.ship.points,
+        });
+        // changePoints({
+        //   ...points,
+        //   [player]: {
+        //     ...points[player],
+        //     points: points[player].points - celula.ship.points,
+        //   },
+        // });
+      } else if (player === 'player') {
+        console.log(points);
+        console.log('#->', player, {
+          ...points,
+          [player]: points[player].points - celula.ship.points,
+        });
+        // changePoints({
+        //   ...points,
+        //   [player]: points[player] - celula.ship.points,
+        // });
+      }
     }
   };
+
+  const handlerGame = (x, y) => {
+    if (statusGame.config) handlerConfigCels(x, y);
+
+    if (statusGame.inicio) {
+      handlerSelectedCels(x, y);
+      if (playerGaming === 'player') {
+        if (player === 'IAzinha' && selectedCels.length === 3) {
+          let auxPoints = { ...points };
+          for (let i = 0; i < selectedCels.length; i++) {
+            handlerUpdateCelulas(
+              selectedCels[i].x,
+              selectedCels[i].y,
+              {
+                ...celulas[selectedCels[i].y][selectedCels[i].x],
+                open: true,
+                selected: false,
+              },
+            );
+
+            if (
+              celulas[selectedCels[i].y][selectedCels[i].x].ship.hasShip
+              && celulas[selectedCels[i].y][selectedCels[i].x].open
+            ) {
+              auxPoints = {
+                ...auxPoints,
+                player: {
+                  ...auxPoints.player,
+                  points: auxPoints.player.points
+                  + celulas[selectedCels[i].y][selectedCels[i].x].ship.points,
+                },
+              };
+            } else if (
+              !celulas[selectedCels[i].y][selectedCels[i].x].ship.hasShip
+              && celulas[selectedCels[i].y][selectedCels[i].x].open
+            ) {
+              auxPoints = {
+                ...auxPoints,
+                player: {
+                  ...auxPoints.player,
+                  points: auxPoints.player.points
+                  - celulas[selectedCels[i].y][selectedCels[i].x].ship.points,
+                },
+              };
+            }
+          }
+
+          changePoints(auxPoints);
+          setSelectedCels([]);
+          setPlayerGaming('AIzinha');
+          return;
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    const fnAux = async () => {
+      if (playerGaming === 'AIzinha' && player === 'player') {
+        const celsSelected = [];
+        let l = 0;
+        while (l < 3) {
+          const xAux = Math.abs(Math.floor(Math.random() * 15));
+          const yAux = Math.abs(Math.floor(Math.random() * 15));
+          if (celulas[yAux][xAux].open) continue;
+          celsSelected.push({ x: xAux, y: yAux });
+          handlerUpdateCelulas(
+            xAux,
+            yAux,
+            {
+              ...celulas[yAux][xAux],
+              selected: true,
+            },
+          );
+          l++;
+        }
+
+        if (player === 'player' && celsSelected.length === 3) {
+          let auxPoints = { ...points };
+          for (let i = 0; i < celsSelected.length; i++) {
+            await delay(1);
+
+            handlerUpdateCelulas(
+              celsSelected[i].x,
+              celsSelected[i].y,
+              {
+                ...celulas[celsSelected[i].y][celsSelected[i].x],
+                open: true,
+                selected: false,
+              },
+            );
+
+            if (
+              celulas[celsSelected[i].y][celsSelected[i].x].ship.hasShip
+              && celulas[celsSelected[i].y][celsSelected[i].x].open
+            ) {
+              auxPoints = {
+                ...auxPoints,
+                IAzinha: auxPoints.IAzinha
+                  + celulas[celsSelected[i].y][celsSelected[i].x].ship.points,
+              };
+            } else if (
+              !celulas[celsSelected[i].y][celsSelected[i].x].ship.hasShip
+              && celulas[celsSelected[i].y][celsSelected[i].x].open
+            ) {
+              auxPoints = {
+                ...auxPoints,
+                IAzinha: auxPoints.IAzinha
+                  - celulas[celsSelected[i].y][celsSelected[i].x].ship.points,
+              };
+            }
+          }
+
+          changePoints(auxPoints);
+          setPlayerGaming('player');
+          return;
+        }
+      }
+    };
+
+    fnAux();
+  }, [playerGaming]);
 
   return (
     <div className="campo campo-16x16">
@@ -222,7 +426,7 @@ export const Campo = ({
           key={(x ** 2) + y}
           configCel={configCel}
           xy={{ x, y }}
-          onOpen={() => handlerConfigCels(x, y)}
+          onOpen={() => handlerGame(x, y)}
           changePoints={() => handlerChangePoints(configCel)}
         />
       )))}

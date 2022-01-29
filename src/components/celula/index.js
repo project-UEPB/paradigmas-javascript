@@ -9,9 +9,6 @@ export const Celula = ({
   configCel, onOpen, changePoints, open, statusGame, xy,
 }) => {
   const handlerOnClick = () => {
-    if (open) {
-      changePoints();
-    }
     onOpen();
   };
 
