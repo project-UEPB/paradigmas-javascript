@@ -2,6 +2,7 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-unused-vars */
 /* eslint-disable arrow-body-style */
+/* eslint linebreak-style: ["error", "windows"] */
 import React, { useState, useEffect } from 'react';
 import { Celula } from '../celula';
 import {

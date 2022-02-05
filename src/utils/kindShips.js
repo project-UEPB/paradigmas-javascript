@@ -1,3 +1,4 @@
+/* eslint linebreak-style: ["error", "windows"] */
 export const PORTA_AVIOES = { kind: 'PORTA_AVIOES', size: 5 };
 export const CONTRATORPEDEIROS = { kind: 'CONTRATORPEDEIROS', size: 3 };
 export const NAVIO_TANQUE = { kind: 'NAVIO_TANQUE', size: 4 };

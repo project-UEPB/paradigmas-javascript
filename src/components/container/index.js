@@ -1,3 +1,4 @@
+/* eslint linebreak-style: ["error", "windows"] */
 import React from 'react';
 import { Campo } from '../campo';
 // import { Celula } from '../celula';
