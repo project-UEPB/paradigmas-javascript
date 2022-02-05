@@ -7,26 +7,14 @@ const HomeScreen = () => {
   const navigate = useNavigate();
 
   const [name, setName] = useState('');
-//   const [size, setSize] = useState('');
   const [checked, setChecked] = useState(false);
-
-//   const handleOnChange = () => {
-//     setIsChecked(!isChecked);
-//   };
 
   function toggle(value) {
     return !value;
   }
 
-//   function handleClickStart(name, size) {
-//     setName(name);
-//     setSize(size);
-//     console.log('Name and Size saved!');
-//   }
-
   function handleClickPlay(event) {
     navigate(`/game/${name}/${checked ? '16' : '12'}`, { replace: true });
-    // history.push('/game');
   }
 
   function handleClickScore() {
