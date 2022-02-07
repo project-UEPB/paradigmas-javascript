@@ -62,6 +62,11 @@ const initialStatusGame = {
   reiniciar: false,
 };
 
+const initialSuperTiro = {
+  player: false,
+  IAzinha: false,
+};
+
 const findBy = (kind, arr) => arr.filter((el) => el.kind === kind)[0];
 const removeOne = (kind, arr) => {
   const aux = [];
@@ -77,6 +82,7 @@ export const ContainerBatalha = () => {
   const [statusGame, setStatusGame] = useState(initialStatusGame);
   const [orientacao, setOrientacao] = useState('h');
   const [playerGaming, setPlayerGaming] = useState('player');
+  const [superTiro, setSuperTiro] = useState(initialSuperTiro);
 
   const handlerSelectedShip = (shipKey) => {
     if (statusGame.config) {
@@ -151,6 +157,7 @@ export const ContainerBatalha = () => {
               setSelectedShip={setShips}
               statusGame={statusGame}
               campoConfig={{ x: 16, y: 16 }}
+              // superTiro={superTiro}
             />
           </div>
         </div>
@@ -168,6 +175,8 @@ export const ContainerBatalha = () => {
               statusGame={statusGame}
               orientacao="h"
               player="IAzinha"
+              superTiro={superTiro}
+              onChangeSuperTiro={setSuperTiro}
             />
           </div>
         </div>
@@ -180,6 +189,9 @@ export const ContainerBatalha = () => {
           initialShips={ships}
           onChangeShip={setShips}
           onChangeSelectedShip={handlerSelectedShip}
+          superTiro={superTiro}
+          onChangeSuperTiro={setSuperTiro}
+          playerGaming={playerGaming}
         />
         <div className="btns-play-game">
           <Botao

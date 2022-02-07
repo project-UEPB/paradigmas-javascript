@@ -40,6 +40,8 @@ export const Campo = ({
   campoConfig = {},
   playerGaming,
   setPlayerGaming,
+  superTiro,
+  onChangeSuperTiro,
 }) => {
   const handlerInitialCelulas = () => {
     const initialCelulas = new Array(campoConfig.x).fill(null).map(
@@ -168,7 +170,6 @@ export const Campo = ({
   };
 
   const handlerSelectedCels = (x, y) => {
-    if (selectedCels.length >= 3) return;
     const copy = [...selectedCels];
     copy.push({ x, y });
     setSelectedCels(copy);
@@ -250,58 +251,12 @@ export const Campo = ({
     if (player === 'IAzinha') randomInitialShip();
   }, [statusGame.inicio]);
 
-  const handlerChangePoints = (celula) => {
-    if (celula.ship.hasShip && celula.open) {
-      // console.log('#->', player, celula);
-      // console.log('#->', points);
-      // if (playerGaming === 'player') {
-      //   changePoints({
-      //     ...points,
-      //     [player]: {
-      //       ...points[player],
-      //       points: points[player].points + celula.ship.points,
-      //     },
-      //   });
-      // } else if (playerGaming === 'IAzinha') {
-      //   changePoints({
-      //     ...points,
-      //     [player]: points[player] + celula.ship.points,
-      //   });
-      // }
-    } else if (!celula.ship.hasShip && celula.open) {
-      if (player === 'IAzinha') {
-        console.log(points);
-        console.log('|->', player, {
-          ...points,
-          [player]: points[player].points - celula.ship.points,
-        });
-        // changePoints({
-        //   ...points,
-        //   [player]: {
-        //     ...points[player],
-        //     points: points[player].points - celula.ship.points,
-        //   },
-        // });
-      } else if (player === 'player') {
-        console.log(points);
-        console.log('#->', player, {
-          ...points,
-          [player]: points[player].points - celula.ship.points,
-        });
-        // changePoints({
-        //   ...points,
-        //   [player]: points[player] - celula.ship.points,
-        // });
-      }
-    }
-  };
-
   const handlerGame = (x, y) => {
     if (statusGame.config) handlerConfigCels(x, y);
 
     if (statusGame.inicio) {
-      handlerSelectedCels(x, y);
-      if (playerGaming === 'player') {
+      if (playerGaming === 'player' && !superTiro.player) {
+        handlerSelectedCels(x, y);
         if (player === 'IAzinha' && selectedCels.length === 3) {
           let auxPoints = { ...points };
           for (let i = 0; i < selectedCels.length; i++) {
@@ -344,16 +299,124 @@ export const Campo = ({
 
           changePoints(auxPoints);
           setSelectedCels([]);
-          setPlayerGaming('AIzinha');
+          setPlayerGaming('IAzinha');
           return;
         }
+      }
+
+      if (playerGaming === 'player' && superTiro.player) {
+        const selected = [{ x, y }];
+
+        handlerSelectedCels(x, y);
+        if (y - 1 >= 0 && x - 1 >= 0) {
+          selected.push({
+            x: x - 1,
+            y: y - 1,
+          });
+          handlerSelectedCels(x - 1, y - 1);
+        }
+        if (y + 1 <= campoConfig.y - 1 && x + 1 <= campoConfig.x - 1) {
+          selected.push({
+            x: x + 1,
+            y: y + 1,
+          });
+          handlerSelectedCels(x + 1, y + 1);
+        }
+        if (y - 1 >= 0 && x + 1 <= campoConfig.x - 1) {
+          selected.push({
+            x: x + 1,
+            y: y - 1,
+          });
+          handlerSelectedCels(x + 1, y - 1);
+        }
+        if (y + 1 <= campoConfig.y - 1 && x - 1 >= 0) {
+          selected.push({
+            x: x - 1,
+            y: y + 1,
+          });
+          handlerSelectedCels(x - 1, y + 1);
+        }
+        if (x - 1 >= 0) {
+          selected.push({
+            x: x - 1,
+            y,
+          });
+          handlerSelectedCels(x - 1, y);
+        }
+        if (y - 1 >= 0) {
+          selected.push({
+            x,
+            y: y - 1,
+          });
+          handlerSelectedCels(x, y - 1);
+        }
+        if (y + 1 <= campoConfig.y - 1) {
+          selected.push({
+            x,
+            y: y + 1,
+          });
+          handlerSelectedCels(x, y + 1);
+        }
+        if (x + 1 <= campoConfig.x - 1) {
+          selected.push({
+            x: x + 1,
+            y,
+          });
+          handlerSelectedCels(x + 1, y);
+        }
+
+        onChangeSuperTiro({ ...superTiro, [playerGaming]: null });
+
+        let auxPoints = { ...points };
+        for (let i = 0; i < selected.length; i++) {
+          handlerUpdateCelulas(
+            selected[i].x,
+            selected[i].y,
+            {
+              ...celulas[selected[i].y][selected[i].x],
+              open: true,
+              selected: false,
+            },
+          );
+
+          if (
+            celulas[selected[i].y][selected[i].x].ship.hasShip
+              && celulas[selected[i].y][selected[i].x].open
+          ) {
+            auxPoints = {
+              ...auxPoints,
+              player: {
+                ...auxPoints.player,
+                points: auxPoints.player.points
+                  + celulas[selected[i].y][selected[i].x].ship.points,
+              },
+            };
+          } else if (
+            !celulas[selected[i].y][selected[i].x].ship.hasShip
+              && celulas[selected[i].y][selected[i].x].open
+          ) {
+            auxPoints = {
+              ...auxPoints,
+              player: {
+                ...auxPoints.player,
+                points: auxPoints.player.points
+                  - celulas[selected[i].y][selected[i].x].ship.points,
+              },
+            };
+          }
+        }
+
+        changePoints(auxPoints);
+        setSelectedCels([]);
+        setPlayerGaming('IAzinha');
+        return;
       }
     }
   };
 
   useEffect(() => {
     const fnAux = async () => {
-      if (playerGaming === 'AIzinha' && player === 'player') {
+      if (playerGaming === 'IAzinha' && player === 'player') {
         const celsSelected = [];
         let l = 0;
         while (l < 3) {
@@ -427,7 +490,6 @@ export const Campo = ({
           configCel={configCel}
           xy={{ x, y }}
           onOpen={() => handlerGame(x, y)}
-          changePoints={() => handlerChangePoints(configCel)}
         />
       )))}
     </div>

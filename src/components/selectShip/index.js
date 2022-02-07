@@ -13,6 +13,9 @@ export const SelectShip = ({
   orientacao,
   onChangeOrientacao,
   statusGame,
+  superTiro,
+  onChangeSuperTiro,
+  playerGaming,
 }) => {
   const [selectedShip, setSelectedShip] = useState('');
   const [reload, setReload] = useState(false);
@@ -85,6 +88,22 @@ export const SelectShip = ({
           text="V"
           title="Vertical"
           onClick={() => onChangeOrientacao('v')}
+        />
+      </div>
+      )}
+      {(statusGame.inicio) && (
+      <div className="super-tiro">
+        <Botao
+          active={superTiro[playerGaming] ? 'btn-orientacao-ativo' : ''}
+          text="Super Tiro"
+          title="Super Tiro"
+          onClick={() => {
+            if (playerGaming === 'player') {
+              onChangeSuperTiro({
+                ...superTiro, [playerGaming]: superTiro[playerGaming] === null ? null : true,
+              });
+            }
+          }}
         />
       </div>
       )}
