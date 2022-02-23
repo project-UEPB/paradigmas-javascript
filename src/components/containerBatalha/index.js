@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-alert */
 /* eslint-disable no-plusplus */
@@ -11,6 +12,7 @@ import { Botao } from '../Botao';
 import { Campo } from '../campo';
 import { SelectShip } from '../selectShip';
 import UserContext from '../../UserContext';
+import api from '../../services/api';
 
 import './style.css';
 
@@ -144,9 +146,24 @@ export const ContainerBatalha = () => {
     if (!statusGame.inicio && canInitGame()) setStatusGame({ ...initialStatusGame, inicio: true });
   };
 
+  const postWin = async () => {
+    await api.post('/score/create',
+      {
+        name: context.name,
+        score: points.player.points,
+      })
+      .then((response) => {
+        console.log('Enviado');
+      })
+      .catch((err) => {
+        console.error(`ops! ocorreu um erro${err}`);
+      });
+  };
+
   useEffect(() => {
     if (win.player) {
-      alert(`Parabéns, ${points.player.name} você venceu!!!`);
+      postWin();
+      alert(`Parabéns, ${context.name} você venceu!!!`);
     }
     if (win.IAzinha) {
       alert('Que pena a IAzinha venceu!!!');
@@ -175,6 +192,8 @@ export const ContainerBatalha = () => {
               seletedShip={ships}
               orientacao={orientacao}
               setSelectedShip={setShips}
+              onChangeWin={setWin}
+              win={win}
               statusGame={statusGame}
               campoConfig={{ x: context.campSize, y: context.campSize }}
             />

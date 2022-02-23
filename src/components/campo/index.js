@@ -30,7 +30,7 @@ export const Campo = ({
   setPlayerGaming,
   superTiro,
   onChangeSuperTiro,
-  onChangeWin,
+  onChangeWin = () => {},
   win,
 }) => {
   const handlerInitialCelulas = () => {

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../services/api';
 import { format } from "date-fns";
+import { Botao } from '../../components/Botao';
 
 import './index.css';
 
@@ -23,6 +24,11 @@ const ScoreScreen = () => {
 
     return (
         <div className="container-jogo-score">
+            <Botao
+                onClick={() => {}}
+                text="<"
+                title="Voltar"
+            />
             <div className="content-score">
             <h1 className="title-score">Ranking</h1>
 
