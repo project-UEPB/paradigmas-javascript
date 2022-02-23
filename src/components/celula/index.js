@@ -36,9 +36,7 @@ export const Celula = ({
             ? 'celula regular selected-bg'
             : 'celula withou-border'}
         onClick={handlerOnClick}
-      >
-        {`${xy.x},${xy.y}`}
-      </div>
+      />
     </div>
   );
 };

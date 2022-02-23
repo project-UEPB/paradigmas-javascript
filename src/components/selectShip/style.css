@@ -79,6 +79,11 @@
   background-color: #CCC;
 }
 
+.super-tiro > .btn-block {
+  background-color: #CCC;
+  cursor: not-allowed;
+}
+
 .super-tiro > button {
   padding: 5px 10px;
   border: 2px solid #CCC;

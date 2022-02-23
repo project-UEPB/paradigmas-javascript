@@ -3,6 +3,7 @@ import { Celula } from '../celula';
 import {
   ships,
 } from '../../utils/kindShips';
+import { IAzona } from '../../utils/iazinha';
 
 import './style.css';
 
@@ -58,6 +59,7 @@ export const Campo = ({
 
   const [celulas, setCelulas] = useState(handlerInitialCelulas());
   const [selectedCels, setSelectedCels] = useState([]);
+  const [winner, setWinner] = useState(false);
 
   const handlerUpdateCelulas = (x, y, objUpdate) => {
     const copy = [...celulas];
@@ -75,7 +77,26 @@ export const Campo = ({
 
   useEffect(() => {
     if (statusGame.inicio) {
-      if (isWin()) onChangeWin({ ...win, [playerGaming]: true });
+      if (isWin() && !winner) {
+        if (playerGaming === 'IAzinha') {
+          onChangeWin({ ...win, player: true });
+
+          changePoints({
+            ...points,
+            player: {
+              ...points.player, points: points.player.points + 10000,
+            },
+          });
+        }
+        if (playerGaming === 'player') {
+          onChangeWin({ ...win, IAzinha: true });
+          changePoints({
+            ...points,
+            IAzinha: points.IAzinha + 10000,
+          });
+        }
+        setWinner(true);
+      }
     }
   }, [celulas]);
 
@@ -256,57 +277,60 @@ export const Campo = ({
     if (player === 'IAzinha') randomInitialShip();
   }, [statusGame.inicio]);
 
+  useEffect(() => {
+    if (player === 'IAzinha' && selectedCels.length === 3) {
+      let auxPoints = { ...points };
+      for (let i = 0; i < selectedCels.length; i++) {
+        handlerUpdateCelulas(
+          selectedCels[i].x,
+          selectedCels[i].y,
+          {
+            ...celulas[selectedCels[i].y][selectedCels[i].x],
+            open: true,
+            selected: false,
+          },
+        );
+
+        if (
+          celulas[selectedCels[i].y][selectedCels[i].x].ship.hasShip
+          && celulas[selectedCels[i].y][selectedCels[i].x].open
+        ) {
+          auxPoints = {
+            ...auxPoints,
+            player: {
+              ...auxPoints.player,
+              points: auxPoints.player.points
+              + celulas[selectedCels[i].y][selectedCels[i].x].ship.points,
+            },
+          };
+        } else if (
+          !celulas[selectedCels[i].y][selectedCels[i].x].ship.hasShip
+          && celulas[selectedCels[i].y][selectedCels[i].x].open
+        ) {
+          auxPoints = {
+            ...auxPoints,
+            player: {
+              ...auxPoints.player,
+              points: auxPoints.player.points
+              - celulas[selectedCels[i].y][selectedCels[i].x].ship.points,
+            },
+          };
+        }
+      }
+
+      changePoints(auxPoints);
+      setSelectedCels([]);
+      setPlayerGaming('IAzinha');
+      return;
+    }
+  }, [selectedCels]);
+
   const handlerGame = (x, y) => {
     if (statusGame.config) handlerConfigCels(x, y);
 
     if (statusGame.inicio) {
       if (playerGaming === 'player' && !superTiro.player) {
         handlerSelectedCels(x, y);
-        if (player === 'IAzinha' && selectedCels.length === 3) {
-          let auxPoints = { ...points };
-          for (let i = 0; i < selectedCels.length; i++) {
-            handlerUpdateCelulas(
-              selectedCels[i].x,
-              selectedCels[i].y,
-              {
-                ...celulas[selectedCels[i].y][selectedCels[i].x],
-                open: true,
-                selected: false,
-              },
-            );
-
-            if (
-              celulas[selectedCels[i].y][selectedCels[i].x].ship.hasShip
-              && celulas[selectedCels[i].y][selectedCels[i].x].open
-            ) {
-              auxPoints = {
-                ...auxPoints,
-                player: {
-                  ...auxPoints.player,
-                  points: auxPoints.player.points
-                  + celulas[selectedCels[i].y][selectedCels[i].x].ship.points,
-                },
-              };
-            } else if (
-              !celulas[selectedCels[i].y][selectedCels[i].x].ship.hasShip
-              && celulas[selectedCels[i].y][selectedCels[i].x].open
-            ) {
-              auxPoints = {
-                ...auxPoints,
-                player: {
-                  ...auxPoints.player,
-                  points: auxPoints.player.points
-                  - celulas[selectedCels[i].y][selectedCels[i].x].ship.points,
-                },
-              };
-            }
-          }
-
-          changePoints(auxPoints);
-          setSelectedCels([]);
-          setPlayerGaming('IAzinha');
-          return;
-        }
       }
 
       if (playerGaming === 'player' && superTiro.player) {
@@ -422,23 +446,17 @@ export const Campo = ({
   useEffect(() => {
     const fnAux = async () => {
       if (playerGaming === 'IAzinha' && player === 'player') {
-        const celsSelected = [];
-        let l = 0;
-        while (l < 3) {
-          const xAux = Math.abs(Math.floor(Math.random() * 15));
-          const yAux = Math.abs(Math.floor(Math.random() * 15));
-          if (celulas[yAux][xAux].open) continue;
-          celsSelected.push({ x: xAux, y: yAux });
+        const celsSelected = IAzona(celulas, campoConfig.x);
+        celsSelected.forEach((element) => {
           handlerUpdateCelulas(
-            xAux,
-            yAux,
+            element.x,
+            element.y,
             {
-              ...celulas[yAux][xAux],
+              ...celulas[element.y][element.x],
               selected: true,
             },
           );
-          l++;
-        }
+        });
 
         if (player === 'player' && celsSelected.length === 3) {
           let auxPoints = { ...points };

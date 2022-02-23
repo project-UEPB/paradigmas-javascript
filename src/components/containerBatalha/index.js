@@ -139,8 +139,8 @@ export const ContainerBatalha = () => {
     if (win.player) {
       alert(`Parabéns, ${points.player.name} você venceu!!!`);
     }
-    if (win.player) {
-      alert('Que pena a IAzinha você venceu!!!');
+    if (win.IAzinha) {
+      alert('Que pena a IAzinha venceu!!!');
     }
   }, [win]);
 
@@ -213,7 +213,10 @@ export const ContainerBatalha = () => {
           />
           <Botao
             text="Reiniciar"
-            onClick={() => setStatusGame({ ...initialStatusGame, reiniciar: true })}
+            onClick={() => {
+              // eslint-disable-next-line no-restricted-globals
+              location.reload();
+            }}
           />
           <Botao
             text="Iniciar"

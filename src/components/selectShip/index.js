@@ -19,6 +19,7 @@ export const SelectShip = ({
 }) => {
   const [selectedShip, setSelectedShip] = useState('');
   const [reload, setReload] = useState(false);
+  const [superTiroPlayer, setSuperTiroPlayer] = useState(false);
   const [ships, setShips] = useState([]);
 
   const handlerDecrementShip = (shipKey) => {
@@ -95,9 +96,11 @@ export const SelectShip = ({
       <div className="super-tiro">
         <Botao
           active={superTiro[playerGaming] ? 'btn-orientacao-ativo' : ''}
+          disabled={superTiroPlayer}
           text="Super Tiro"
           title="Super Tiro"
           onClick={() => {
+            if (!superTiroPlayer) setSuperTiroPlayer(true);
             if (playerGaming === 'player') {
               onChangeSuperTiro({
                 ...superTiro, [playerGaming]: superTiro[playerGaming] === null ? null : true,
