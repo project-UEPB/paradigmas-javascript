@@ -22,7 +22,7 @@ export const App = () => {
         <Router>
           <Routes>
             <Route exact element={<HomeScreen/>} path="/" />
-            <Route element={<ContainerBatalha />} path="/game/:name/:size" />
+            <Route element={<ContainerBatalha />} path="/game" />
             <Route element={<ScoreScreen/>} path="/score" />
           </Routes>
         </Router>

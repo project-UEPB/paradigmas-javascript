@@ -103,7 +103,7 @@ export const Campo = ({
       if (orientacao === 'h') {
         if (getShipSelected(seletedShip).qtd - 1 < 0) return;
         if (celulas[y][x].ship.hasShip) return;
-        if (getShipSelected(seletedShip).size + x > 16) return;
+        if (getShipSelected(seletedShip).size + x > campoConfig.x) return;
 
         const rightSideValid = XRigthSideIsValid(
           getShipSelected(seletedShip).size,
@@ -210,11 +210,11 @@ export const Campo = ({
   const randomInitialShip = () => {
     let i = 0;
     while (i < 10) {
-      const x = Math.abs(Math.floor(Math.random() * 15));
-      const y = Math.abs(Math.floor(Math.random() * 15));
+      const x = Math.abs(Math.floor(Math.random() * campoConfig.x - 1));
+      const y = Math.abs(Math.floor(Math.random() * campoConfig.x - 1));
 
       if (x - ships[i].size < 0) continue;
-      if (x + ships[i].size > 15) continue;
+      if (x + ships[i].size > campoConfig.x - 1) continue;
 
       let validSide = true;
       for (let j = x; j < ships[i].size + x; j++) {
@@ -228,7 +228,7 @@ export const Campo = ({
       if (!validSide) continue;
 
       if (!celulas[y][x].ship.hasShip) {
-        if (ships[i].size + x < 15) {
+        if (ships[i].size + x < campoConfig.x - 1) {
           let img = true;
 
           for (let k = x - ships[i].size; k < x; k++) {
@@ -500,7 +500,7 @@ export const Campo = ({
   }, [playerGaming]);
 
   return (
-    <div className="campo campo-16x16">
+    <div className={campoConfig.x === 16 ? 'campo campo-16x16' : 'campo campo-12x12'}>
       {celulas.map((line, y) => line.map((configCel, x) => (
         <Celula
           statusGame={statusGame}

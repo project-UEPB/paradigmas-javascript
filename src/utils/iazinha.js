@@ -154,16 +154,16 @@ export const IAzona = (shipsAll, campConfig) => {
     return nextPostions.slice(0, 3);
   }
   if (nextPostions.length === 2) {
-    const xAux = Math.abs(Math.floor(Math.random() * 16));
-    const yAux = Math.abs(Math.floor(Math.random() * 16));
+    const xAux = Math.abs(Math.floor(Math.random() * campConfig));
+    const yAux = Math.abs(Math.floor(Math.random() * campConfig));
     nextPostions.push({ x: xAux, y: yAux });
 
     return nextPostions;
   }
   if (nextPostions.length === 1) {
     for (let j = 0; j < 2; j++) {
-      const xAux = Math.abs(Math.floor(Math.random() * 16));
-      const yAux = Math.abs(Math.floor(Math.random() * 16));
+      const xAux = Math.abs(Math.floor(Math.random() * campConfig));
+      const yAux = Math.abs(Math.floor(Math.random() * campConfig));
       nextPostions.push({ x: xAux, y: yAux });
     }
 
@@ -171,8 +171,8 @@ export const IAzona = (shipsAll, campConfig) => {
   }
 
   for (let j = 0; j < 3; j++) {
-    const xAux = Math.abs(Math.floor(Math.random() * 16));
-    const yAux = Math.abs(Math.floor(Math.random() * 16));
+    const xAux = Math.abs(Math.floor(Math.random() * campConfig));
+    const yAux = Math.abs(Math.floor(Math.random() * campConfig));
     nextPostions.push({ x: xAux, y: yAux });
   }
 
