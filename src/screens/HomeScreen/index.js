@@ -1,25 +1,35 @@
 /* eslint-disable */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './index.css';
 import { useNavigate } from 'react-router-dom';
+
+import UserContext from '../../UserContext';
 
 const HomeScreen = () => {
   const navigate = useNavigate();
 
   const [name, setName] = useState('');
   const [checked, setChecked] = useState(false);
-
+  const [context, setContext] = useContext(UserContext);
+  
   function toggle(value) {
     return !value;
-  }
-
-  function handleClickPlay(event) {
-    navigate(`/game/${name}/${checked ? '16' : '12'}`, { replace: true });
   }
 
   function handleClickScore() {
     navigate("/score", { replace: true });
   }
+
+  const handleClickPlay = (event) => {
+    const newState = { 
+      name: name, 
+      campSize: checked ? 16 : 12,
+    };
+    setContext(newState);
+    
+    navigate('/game', { replace: true });
+  }
+  
   return (
     <div className="container-jogo-home">
       <div className="content-home">
@@ -62,7 +72,7 @@ const HomeScreen = () => {
         </div>
       </div>
     </div>
-  );
+  )   
 };
 
 export default HomeScreen;

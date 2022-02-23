@@ -4,28 +4,25 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen/index.js';
-import { Container } from './components/container';
 import ScoreScreen from './screens/ScoreScreen/index.js';
-
+import { ContainerBatalha } from  './components/containerBatalha';
 import UserContext from './UserContext';
 
+const initialInfo = {
+  name: '',
+  campSize: 12,
+}
+
 export const App = () => {
-  // const [name, setName] = useState("Klay");
-  // const [size, setSize] = useState("");
-
-  // function handleClickStart(name, size) {
-  //   setName(name);
-  //   setSize(size);
-  //   console.log("Name and Size saved!");
-  // }
-
+  const [info, setInfo] = useState(initialInfo);
+  
   return (
     <>
-      <UserContext.Provider value={""} >
+      <UserContext.Provider value={[info, setInfo]} >
         <Router>
           <Routes>
             <Route exact element={<HomeScreen/>} path="/" />
-            <Route element={<Container/>} path="/game/:name/:size" />
+            <Route element={<ContainerBatalha />} path="/game/:name/:size" />
             <Route element={<ScoreScreen/>} path="/score" />
           </Routes>
         </Router>

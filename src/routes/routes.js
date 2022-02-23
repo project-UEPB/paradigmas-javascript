@@ -1,7 +1,7 @@
 /* eslint-disable */
 import HomeScreen from "../screens/HomeScreen.js";
-import { Container } from './components/container';
 import ScoreScreen from "../screens/ScoreScreen.js";
+import { ContainerBatalha } from  '../components/containerBatalha'
 
 const routes = [
     {
@@ -10,9 +10,9 @@ const routes = [
         component: HomeScreen,
     },
     {
-        path: "/game/:name/:size",
+        path: "/game",
         name: "Game",
-        component: Container,
+        component: ContainerBatalha,
     },
     {
         path: "/score",
