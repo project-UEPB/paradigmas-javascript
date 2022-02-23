@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable consistent-return */
@@ -83,6 +84,7 @@ export const ContainerBatalha = () => {
   const [orientacao, setOrientacao] = useState('h');
   const [playerGaming, setPlayerGaming] = useState('player');
   const [superTiro, setSuperTiro] = useState(initialSuperTiro);
+  const [win, setWin] = useState(initialSuperTiro);
 
   const handlerSelectedShip = (shipKey) => {
     if (statusGame.config) {
@@ -133,6 +135,15 @@ export const ContainerBatalha = () => {
     if (!statusGame.inicio && canInitGame()) setStatusGame({ ...initialStatusGame, inicio: true });
   };
 
+  useEffect(() => {
+    if (win.player) {
+      alert(`Parabéns, ${points.player.name} você venceu!!!`);
+    }
+    if (win.player) {
+      alert('Que pena a IAzinha você venceu!!!');
+    }
+  }, [win]);
+
   return (
     <div className="container-jogo">
       <Botao
@@ -177,6 +188,8 @@ export const ContainerBatalha = () => {
               player="IAzinha"
               superTiro={superTiro}
               onChangeSuperTiro={setSuperTiro}
+              win={win}
+              onChangeWin={setWin}
             />
           </div>
         </div>

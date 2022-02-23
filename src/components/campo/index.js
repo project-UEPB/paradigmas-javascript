@@ -1,14 +1,3 @@
-/* eslint-disable no-await-in-loop */
-/* eslint-disable no-useless-return */
-/* eslint-disable no-debugger */
-/* eslint-disable no-continue */
-/* eslint-disable consistent-return */
-/* eslint-disable for-direction */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-plusplus */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable no-unused-vars */
-/* eslint-disable arrow-body-style */
 import React, { useState, useEffect } from 'react';
 import { Celula } from '../celula';
 import {
@@ -42,6 +31,8 @@ export const Campo = ({
   setPlayerGaming,
   superTiro,
   onChangeSuperTiro,
+  onChangeWin,
+  win,
 }) => {
   const handlerInitialCelulas = () => {
     const initialCelulas = new Array(campoConfig.x).fill(null).map(
@@ -73,6 +64,20 @@ export const Campo = ({
     copy[y][x] = objUpdate;
     setCelulas(copy);
   };
+
+  const isWin = () => {
+    let qtdWin = (4 * 2) + (3 * 3) + (2 * 4) + 5;
+    celulas.map((line) => line.map((cel) => {
+      if (cel.open && cel.ship.hasShip) qtdWin--;
+    }));
+    return qtdWin === 0;
+  };
+
+  useEffect(() => {
+    if (statusGame.inicio) {
+      if (isWin()) onChangeWin({ ...win, [playerGaming]: true });
+    }
+  }, [celulas]);
 
   const handlerConfigCels = (x, y) => {
     if (statusGame.config && getShipSelected(seletedShip)) {
