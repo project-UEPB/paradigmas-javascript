@@ -3,12 +3,14 @@ import React, { useEffect, useState } from 'react';
 import api from '../../services/api';
 import { format } from "date-fns";
 import { Botao } from '../../components/Botao';
+import { useNavigate } from 'react-router-dom';
 
 import './index.css';
 
 const ScoreScreen = () => {
       
     const [scores, setScores] = useState();
+    const navigate = useNavigate();
 
     useEffect(async () => {
         await api
@@ -22,10 +24,14 @@ const ScoreScreen = () => {
         });
     }, []);
 
+    const handlerGoToHome = () => {
+        navigate("/", { replace: true });
+    }
+
     return (
         <div className="container-jogo-score">
             <Botao
-                onClick={() => {}}
+                onClick={handlerGoToHome}
                 text="<"
                 title="Voltar"
             />

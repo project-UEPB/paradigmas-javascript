@@ -56,3 +56,18 @@ tr:hover:nth-child(1n + 2) {
   background-color: #009ff9;
   color: #fff;
 }
+
+.container-jogo-score > button {
+  background: none;
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  font-size: 3rem;
+  border: none;
+  cursor: pointer;
+  color: rgb(0, 0, 0);
+}
+
+.container-jogo-score > button:hover {
+  color: rgba(0, 0, 0, 0.6);
+}
