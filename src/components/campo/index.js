@@ -90,7 +90,6 @@ export const Campo = ({
     if (statusGame.inicio) {
       if (isWin() && !winner) {
         if (player !== 'IAzinha') {
-          console.log('-!>', 'IAzinha');
           onChangeWin({ ...win, IAzinha: true });
           changePoints({
             ...points,
@@ -98,7 +97,6 @@ export const Campo = ({
           });
         }
         if (player !== 'player') {
-          console.log('-!>', 'player');
           onChangeWin({ ...win, player: true });
           changePoints({
             ...points,
