@@ -10,6 +10,7 @@ const HomeScreen = () => {
 
   const [name, setName] = useState('');
   const [checked, setChecked] = useState(false);
+  const [showModal, setShowModal] = useState(true);
   const [context, setContext] = useContext(UserContext);
   
   function toggle(value) {
@@ -18,6 +19,10 @@ const HomeScreen = () => {
 
   function handleClickScore() {
     navigate("/score", { replace: true });
+  }
+
+  const handleShowDevTeam = () => {
+    setShowModal(true);
   }
 
   const handleClickPlay = (event) => {
@@ -32,6 +37,73 @@ const HomeScreen = () => {
   
   return (
     <div className="container-jogo-home">
+      {showModal && (
+        <div className="modal">
+          <div className="content-modal">
+            <h2>Dev Team</h2>
+            <span 
+              className='close-modal'
+              onClick={() => setShowModal(false)}
+            >
+              X
+            </span>
+            <div className="cols">
+              <div className="col-1">
+                <div className="card-dev">
+                  <img 
+                    src="https://avatars.githubusercontent.com/u/56928594?v=4" 
+                    alt="João Vitor" 
+                  />
+                  <div className="info-card">
+                    <h3>João Vitor</h3>
+                    <h5>
+                      Github: <a href="https://github.com/joaoo-vittor" target="_blank">@joaoo-vittor</a>
+                    </h5>
+                  </div>
+                </div>
+                <div className="card-dev">
+                  <img 
+                    src="https://avatars.githubusercontent.com/u/74945608?v=4" 
+                    alt="José Carlos" 
+                  />
+                  <div className="info-card">
+                    <h3>José Carlos</h3>
+                    <h5>
+                      Github: <a href="https://github.com/Clorein" target="_blank">@Clorein</a>
+                    </h5>
+                  </div>
+                </div>
+              </div>
+              <div className="col-2">
+                <div className="card-dev">
+                    <img 
+                      src="https://avatars.githubusercontent.com/u/55154107?v=4" 
+                      alt="Klayton Junior" 
+                    />
+                    <div className="info-card">
+                      <h3>Klayton Junior</h3>
+                      <h5>
+                        Github: <a href="https://github.com/KlaytonJr" target="_blank">@KlaytonJr</a>
+                      </h5>
+                    </div>
+                </div>
+                <div className="card-dev">
+                    <img 
+                      src="https://avatars.githubusercontent.com/u/76905425?v=4" 
+                      alt="Lucas Henrique" 
+                    />
+                    <div className="info-card">
+                      <h3>Lucas Henrique</h3>
+                      <h5>
+                        Github: <a href="https://github.com/lucashgp-dev" target="_blank">@lucashgp-dev</a>
+                      </h5>
+                    </div>
+                  </div>
+              </div>
+             </div>
+          </div>
+        </div>
+      )}
       <div className="content-home">
         <h1 className="title-home">Batalha Naval</h1>
         <div>
@@ -65,6 +137,9 @@ const HomeScreen = () => {
         <div className="btn-container-home">
           <button className="full-btn" onClick={handleClickPlay}>
             JOGAR
+          </button>
+          <button className="full-btn" onClick={handleShowDevTeam}>
+            Dev Team
           </button>
           <button className="border-btn" onClick={handleClickScore}>
             SCORE
