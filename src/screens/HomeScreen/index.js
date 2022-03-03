@@ -73,6 +73,18 @@ const HomeScreen = () => {
                     </h5>
                   </div>
                 </div>
+                <div className="card-dev">
+                  <img 
+                    src="https://avatars.githubusercontent.com/u/83410959?v=4" 
+                    alt="Matheus Rocha" 
+                  />
+                  <div className="info-card">
+                    <h3>Matheus Rocha</h3>
+                    <h5>
+                      Github: <a href="https://github.com/MatheusLSR" target="_blank">@MatheusLSR</a>
+                    </h5>
+                  </div>
+                </div>
               </div>
               <div className="col-2">
                 <div className="card-dev">
