@@ -77,20 +77,19 @@ export const Campo = ({
     if (statusGame.inicio) {
       if (isWin() && !winner) {
         if (playerGaming === 'IAzinha') {
+          onChangeWin({ ...win, IAzinha: true });
+          changePoints({
+            ...points,
+            IAzinha: points.IAzinha + 10000,
+          });
+        }
+        if (playerGaming === 'player') {
           onChangeWin({ ...win, player: true });
-
           changePoints({
             ...points,
             player: {
               ...points.player, points: points.player.points + 10000,
             },
-          });
-        }
-        if (playerGaming === 'player') {
-          onChangeWin({ ...win, IAzinha: true });
-          changePoints({
-            ...points,
-            IAzinha: points.IAzinha + 10000,
           });
         }
         setWinner(true);

@@ -161,11 +161,11 @@ export const ContainerBatalha = () => {
   };
 
   useEffect(() => {
-    if (win.player) {
+    if (win.player && !win.IAzinha) {
       postWin();
       alert(`Parabéns, ${context.name} você venceu!!!`);
     }
-    if (win.IAzinha) {
+    if (win.IAzinha && !win.player) {
       alert('Que pena a IAzinha venceu!!!');
     }
   }, [win]);
