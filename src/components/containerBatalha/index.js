@@ -178,7 +178,6 @@ export const ContainerBatalha = () => {
   };
 
   useEffect(() => {
-    console.log('#->', win);
     if (win.player && !win.IAzinha) {
       postWin();
       alert(`Parabéns, ${context.name} você venceu!!!`);
