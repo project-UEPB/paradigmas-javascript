@@ -10,7 +10,7 @@ const HomeScreen = () => {
 
   const [name, setName] = useState('');
   const [checked, setChecked] = useState(false);
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [context, setContext] = useContext(UserContext);
   
   function toggle(value) {
