@@ -1,0 +1,44 @@
+.balao {
+  font-size: .85em;
+  margin: 0 auto; 
+  background: #000;
+  border-radius: 30px;
+  width: 250px;
+  padding: 15px;
+  height: 270px;
+  color: #fff;
+  text-align: center;
+  background-color: #fff;
+
+  position: absolute;
+  left: 18%;
+  top: 27%;
+  margin-bottom: 1em;
+  z-index: 999;
+}
+
+.cat {
+  height: 200px;
+  width: 200px;
+  z-index: 999;
+  position: relative;
+}
+
+.balao > h3 {
+  color: #000;
+  margin-bottom: 10px;
+}
+
+.balao:after{
+  content: "";
+  width: 0; 
+  height: 0;
+  position: absolute;
+  right: -42px;
+  top: -10px;
+  border-top: 100px solid transparent;
+  border-bottom: 100px solid transparent;
+  border-left: 100px solid #fff;
+  border-radius: 80%;
+  z-index: 0;
+}

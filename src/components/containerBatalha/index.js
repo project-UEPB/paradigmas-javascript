@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { Botao } from '../Botao';
 import { Campo } from '../campo';
 import { SelectShip } from '../selectShip';
+import { Modal } from '../modal';
 import UserContext from '../../UserContext';
 import api from '../../services/api';
 
@@ -92,6 +93,7 @@ export const ContainerBatalha = () => {
   const [win, setWin] = useState(initialSuperTiro);
   const [restart, setRestart] = useState(false);
   const [context, setContext] = useContext(UserContext);
+  const [showModal, setShowModal] = useState(initialSuperTiro);
   const navigate = useNavigate();
 
   const handlerRestart = () => {
@@ -103,6 +105,7 @@ export const ContainerBatalha = () => {
       setStatusGame(initialStatusGame);
       setPoints(initialPoints);
       setShips(initialShips);
+      setShowModal(initialSuperTiro);
       setOrientacao('h');
       setPlayerGaming('player');
       setSuperTiro(initialSuperTiro);
@@ -180,15 +183,16 @@ export const ContainerBatalha = () => {
   useEffect(() => {
     if (win.player && !win.IAzinha) {
       postWin();
-      alert(`Parabéns, ${context.name} você venceu!!!`);
+      setShowModal({ ...showModal, player: true });
     }
     if (win.IAzinha && !win.player) {
-      alert('Que pena a IAzinha venceu!!!');
+      setShowModal({ ...showModal, IAzinha: true });
     }
   }, [win]);
 
   return (
     <div className="container-jogo">
+      <Modal show={showModal} changeModal={setShowModal} />
       <Botao
         onClick={handlerGoToHome}
         text="<"
