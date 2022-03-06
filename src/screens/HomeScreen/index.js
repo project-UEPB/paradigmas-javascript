@@ -4,6 +4,7 @@ import './index.css';
 import { useNavigate } from 'react-router-dom';
 
 import UserContext from '../../UserContext';
+import { Balao } from '../../components/balao';
 
 const HomeScreen = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const HomeScreen = () => {
   const [checked, setChecked] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [context, setContext] = useContext(UserContext);
+  const [emptyName, setEmptyName] = useState(false);
   
   function toggle(value) {
     return !value;
@@ -21,11 +23,12 @@ const HomeScreen = () => {
     navigate("/score", { replace: true });
   }
 
-  const handleShowDevTeam = () => {
-    setShowModal(true);
-  }
-
   const handleClickPlay = (event) => {
+    if (name.trim().length === 0) {
+      setEmptyName(true);
+      return;
+    }
+    setEmptyName(false);
     const newState = { 
       name: name, 
       campSize: checked ? 16 : 12,
@@ -33,6 +36,11 @@ const HomeScreen = () => {
     setContext(newState);
     
     navigate('/game', { replace: true });
+  }
+
+  const handlerShowDevTeam = () => {
+    setEmptyName(false);
+    setShowModal(true);
   }
   
   return (
@@ -119,6 +127,7 @@ const HomeScreen = () => {
       <div className="content-home">
         <h1 className="title-home">Batalha Naval</h1>
         <div>
+          {emptyName && <Balao />}
           <input
             type="text"
             value={name}
@@ -150,7 +159,7 @@ const HomeScreen = () => {
           <button className="full-btn" onClick={handleClickPlay}>
             JOGAR
           </button>
-          <button className="full-btn" onClick={handleShowDevTeam}>
+          <button className="full-btn" onClick={handlerShowDevTeam}>
             Dev Team
           </button>
           <button className="border-btn" onClick={handleClickScore}>

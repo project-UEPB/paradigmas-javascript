@@ -57,6 +57,11 @@ tr:hover:nth-child(1n + 2) {
   color: #fff;
 }
 
+.popozao-mario {
+  height: 280px;
+  width: 480px;
+}
+
 .container-jogo-score > button {
   background: none;
   position: absolute;

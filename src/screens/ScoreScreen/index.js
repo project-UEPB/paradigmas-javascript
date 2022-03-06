@@ -10,13 +10,16 @@ import './index.css';
 const ScoreScreen = () => {
       
     const [scores, setScores] = useState();
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     useEffect(async () => {
+        setLoading(true);
         await api
         .get("/score/read")
         .then((response) => {
             setScores(response.data)
+            setLoading(false);
         })
         .catch((err) => {
             console.error("ops! ocorreu um erro" + err);
@@ -37,7 +40,16 @@ const ScoreScreen = () => {
             <div className="content-score">
             <h1 className="title-score">Ranking</h1>
 
-            <table className="table-score">
+            {loading 
+            ?  
+            (
+                <img 
+                    className='popozao-mario'
+                    src="/assets/gifs/wario-loading.gif" 
+                    alt="loading Mario" 
+                />
+            )
+            : (<table className="table-score">
                 <thead>
                 <tr>
                     <td>Nome</td>
@@ -57,7 +69,8 @@ const ScoreScreen = () => {
                     : null
                 )) : null}
                 </tbody>
-            </table>
+            </table>)
+            }
             </div>
         </div>
 )};
